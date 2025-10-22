@@ -1,0 +1,16 @@
+{
+  "face_graphs": [
+    "face_neutral.json",
+    "face_sad.json",
+    "face_happy.json"
+  ],
+  "diff_graphs": [
+    "diff_neutral_sad_graph.json",
+    "diff_neutral_happy_graph.json"
+  ],
+  "meta": [
+    "diff_neutral_sad_meta.json",
+    "diff_neutral_happy_meta.json"
+  ],
+  "automaton": "automaton.json"
+}
