@@ -13,6 +13,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.utils import load_json
+from src.turing import TuringMachine
 
 st.set_page_config(page_title='Facial Digraphs Explorer', layout='wide')
 
@@ -105,19 +106,27 @@ if run_button:
                             if isinstance(lab, (int, float)) and float(lab) == 1.0:
                                 F.add(dst)
 
-                    st.markdown('**Q (estados):** ' + ', '.join(Q))
-                    st.markdown('**Σ (alfabeto / rótulos):** ' + ', '.join(Sigma))
-                    st.markdown('**q0 (estado inicial):** ' + str(q0))
-                    st.markdown('**F (estados finais - heurística):** ' + (', '.join(sorted(F)) if F else 'nenhum detectado'))
+                    # dividir em colunas: texto (esquerda) e gráfico (direita)
+                    # aumentar a coluna de texto e reduzir a coluna do gráfico para diminuir o gráfico
+                    form_col, graph_col = st.columns([1.6, 1])
+                    with form_col:
+                        st.markdown('**Q (estados):** ' + ', '.join(Q))
+                        st.markdown('**Σ (alfabeto / rótulos):** ' + ', '.join(Sigma))
+                        st.markdown('**q0 (estado inicial):** ' + str(q0))
+                        st.markdown('**F (estados finais - heurística):** ' + (', '.join(sorted(F)) if F else 'nenhum detectado'))
 
-                    # mostrar δ como tabela simples
-                    st.markdown('**δ (transições):**')
-                    for src in sorted(transitions.keys()):
-                        for dst, lab in transitions[src]:
-                            st.write(f'  {src} -> {dst} [label={lab}]')
+                        # mostrar δ como tabela simples
+                        st.markdown('**δ (transições):**')
+                        for src in sorted(transitions.keys()):
+                            for dst, lab in transitions[src]:
+                                st.write(f'  {src} -> {dst} [label={lab}]')
 
-                    # gerar gráfico Graphviz para visualização
+                    # gerar gráfico Graphviz para visualização na coluna direita
                     try:
+                        # identificar a imagem do autômato
+                        with graph_col:
+                            st.markdown('**Visualização do Autômato (Graphviz):**')
+                            # construir gv e renderizar em seguida
                         gv_lines = ['digraph automaton {', '  rankdir=LR;', '  node [shape = circle];']
                         for s in Q:
                             shape = 'doublecircle' if s in F else 'circle'
@@ -127,9 +136,29 @@ if run_button:
                                 gv_lines.append(f'  "{src}" -> "{dst}" [label="{lab}"];')
                         gv_lines.append('}')
                         gv = '\n'.join(gv_lines)
-                        st.graphviz_chart(gv)
+                        with graph_col:
+                            st.graphviz_chart(gv, use_container_width=True)
                     except Exception:
-                        st.info('Não foi possível renderizar o gráfico do autômato.')
+                        with graph_col:
+                            st.info('Não foi possível renderizar o gráfico do autômato.')
+
+                    # Exibir formalização da Máquina de Turing (exemplo) lado a lado
+                    try:
+                        tm = TuringMachine.sample_majority_tm()
+                        st.subheader('Máquina de Turing (exemplo)')
+                        # manter o mesmo padrão de identificação e tamanho do gráfico (texto maior, gráfico menor)
+                        tm_col1, tm_col2 = st.columns([1.6, 1])
+                        with tm_col1:
+                            st.markdown('**Formalização (TM):**')
+                            st.json(tm.to_dict())
+                        with tm_col2:
+                            st.markdown('**Visualização da Máquina de Turing (Graphviz):**')
+                            try:
+                                st.graphviz_chart(tm.to_graphviz(), use_container_width=True)
+                            except Exception:
+                                st.info('Não foi possível renderizar o gráfico da TM.')
+                    except Exception as e:
+                        st.warning('Falha ao exibir Máquina de Turing: ' + str(e))
             except Exception as e:
                 st.warning('Falha ao exibir formalização do autômato: ' + str(e))
 
