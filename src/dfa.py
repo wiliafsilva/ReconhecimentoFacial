@@ -35,7 +35,6 @@ class SimpleEmotionDFA:
                 sizes[r] = len(idxs)
                 counts[r] = int(v[idxs].sum()) if idxs else 0
 
-        # transformar em proporção
         props = {}
         for r in ('mouth','eyes','brows'):
             s = sizes.get(r, 0) or 1

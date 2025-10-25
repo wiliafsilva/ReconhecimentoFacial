@@ -5,9 +5,6 @@ import json
 import cv2
 from pathlib import Path
 
-# Garantir que a raiz do projeto esteja em sys.path para que importações
-# como `from src.utils import ...` funcionem tanto ao executar a partir
-# da raiz quanto ao executar `streamlit run app.py` dentro da pasta `src`.
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -23,7 +20,6 @@ col1, col2 = st.columns([1, 2])
 
 with col1:
     st.header('Inputs')
-    # ordem desejada: primeiro gerar a partir de 3 imagens (passo 1), depois usar digraphs existentes (passo 2)
     if 'mode' not in st.session_state:
         st.session_state['mode'] = 'Primeiro passo - Gerar imagens de teste'
     mode = st.radio('Modo', ['Primeiro passo - Gerar imagens de teste', 'Segundo passo - Usar digraphs existentes'], index=0, key='mode')
@@ -87,10 +83,8 @@ if run_button:
                         if '->' in k:
                             src, dst = k.split('->')
                             Q.add(src); Q.add(dst)
-                            # representar uma transição nomeada pela chave (podemos usar v como rótulo/valor)
                             transitions.setdefault(src.strip(), []).append((dst.strip(), v))
                         else:
-                            # entrada não padrão: manter como comentário
                             transitions.setdefault('?', []).append((k, v))
 
                     Q = sorted(Q)
@@ -106,8 +100,6 @@ if run_button:
                             if isinstance(lab, (int, float)) and float(lab) == 1.0:
                                 F.add(dst)
 
-                    # dividir em colunas: texto (esquerda) e gráfico (direita)
-                    # aumentar a coluna de texto e reduzir a coluna do gráfico para diminuir o gráfico
                     form_col, graph_col = st.columns([1.6, 1])
                     with form_col:
                         st.markdown('**Q (estados):** ' + ', '.join(Q))

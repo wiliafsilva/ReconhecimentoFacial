@@ -28,10 +28,6 @@ def annotate_topk(digraphs_dir, neutral_image_path, k=8):
     if n_lm is None:
         raise RuntimeError('Não foi possível extrair landmarks da imagem neutra')
 
-    # gerar imagens anotadas: vamos usar plot_landmarks com marcação manual para destacar top-K
-    # Cria cópia das imagens com os pontos destacados: para simplicidade, desenharemos círculos grandes nos pontos top-K
-    # Usamos matplotlib drawing via plot_landmarks (acrescentando highlights via axes se necessário)
-
     # helper para desenhar com destaque
     def _plot_with_highlights(image, landmarks, highlight_idxs, out_path):
         import matplotlib.pyplot as plt
