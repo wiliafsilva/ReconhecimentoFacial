@@ -76,7 +76,7 @@ Resumo rápido dos módulos em `src/` e o que cada um faz (útil para leitura do
 
 - `src/landmark_extractor.py`
 	- Extrai landmarks faciais. Prefere MediaPipe (recomendado) e tem um parser para CSVs do OpenFace.
-	Obs: (O repositório contém suporte para consumir saídas do OpenFace, mas não inclui o OpenFace (nem binários))
+	Obs: (O repositório contém suporte para consumir saídas do OpenFace, mas não inclui o OpenFace (nem binários)) "Apenas para a leitura"
 - `src/digraph.py`
 	- Funções para construir o digrafo da face (`build_face_digraph`) e gerar o digrafo de diferença entre duas sets de landmarks (`digraph_from_difference`). Também produz o vetor binário de mudança por landmark.
 - `src/generate_digraphs.py`
