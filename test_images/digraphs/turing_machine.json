@@ -1,0 +1,68 @@
+{
+  "Q": [
+    "q_start",
+    "q_check_sad",
+    "q_check_happy",
+    "q_accept",
+    "q_reject"
+  ],
+  "Sigma": [
+    "0",
+    "1"
+  ],
+  "Gamma": [
+    "0",
+    "1",
+    "_"
+  ],
+  "blank": "_",
+  "q0": "q_start",
+  "accept": [
+    "q_accept"
+  ],
+  "reject": [
+    "q_reject"
+  ],
+  "delta": {
+    "q_start,0": {
+      "next": "q_check_sad",
+      "write": "0",
+      "dir": "R"
+    },
+    "q_start,1": {
+      "next": "q_check_happy",
+      "write": "1",
+      "dir": "R"
+    },
+    "q_start,_": {
+      "next": "q_reject",
+      "write": "_",
+      "dir": "N"
+    },
+    "q_check_sad,_": {
+      "next": "q_accept",
+      "write": "_",
+      "dir": "N"
+    },
+    "q_check_happy,_": {
+      "next": "q_accept",
+      "write": "_",
+      "dir": "N"
+    }
+  },
+  "_metadata": {
+    "description": "Máquina de Turing gerada com base na análise real das expressões faciais",
+    "neutral->sad_decision": "sad",
+    "neutral->happy_decision": "happy",
+    "threshold": 0.05,
+    "symbol_mapping": {
+      "0": "Testa se neutral->sad foi classificado como sad",
+      "1": "Testa se neutral->happy foi classificado como happy",
+      "_": "blank (fim da fita)"
+    },
+    "logic": {
+      "entrada_0": "Lê 0 (sad) → vai para q_check_sad → ACEITA (análise decidiu: sad)",
+      "entrada_1": "Lê 1 (happy) → vai para q_check_happy → ACEITA (análise decidiu: happy)"
+    }
+  }
+}

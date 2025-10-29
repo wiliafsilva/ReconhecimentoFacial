@@ -1,4 +1,13 @@
 {
+  "neutral->sad": 0,
   "neutral->happy": 1,
-  "neutral->sad": 0
+  "_metadata": {
+    "neutral->sad_label": "sad",
+    "neutral->happy_label": "happy",
+    "neutral->sad_ones": 191,
+    "neutral->sad_total": 468,
+    "neutral->happy_ones": 254,
+    "neutral->happy_total": 468,
+    "threshold": 0.05
+  }
 }

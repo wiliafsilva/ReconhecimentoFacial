@@ -1,12 +1,68 @@
 # Reconhecimento Facial (Facial Digraphs)
 
-Descrição detalhada
--------------------
-Este projeto implementa um pipeline experimental para extrair "digraphs" (dígrafos) a partir de landmarks faciais, comparar expressões (por exemplo: neutral → happy / sad), gerar visualizações e construir um artefato simples chamado `automaton.json` usado para decisões rápidas.
+## Resumo
 
-O foco é prático: extrair padrões locais de mudança de landmarks entre uma imagem neutra e uma imagem com expressão alvo, representar essas mudanças como vetores binários e grafos, e aplicar regras/um autômato simples para classificar emoções faciais.
+Sistema de reconhecimento de expressões faciais baseado em análise de landmarks (pontos faciais). Compara uma expressão neutra com expressões de tristeza (sad) e felicidade (happy), gerando automaticamente um **Autômato Finito** e uma **Máquina de Turing** com valores reais baseados na análise.
 
-Principais capacidades
+**Resultado da validação:**
+- Se a expressão corresponder a **sad** → retorna **0**
+- Se a expressão corresponder a **happy** → retorna **1**
+- Se não corresponder → retorna **✗** (com detalhes da classificação detectada)
+
+## Descrição detalhada
+
+Este projeto implementa um pipeline completo para análise de expressões faciais utilizando conceitos de Teoria da Computação (Autômatos e Máquinas de Turing). O sistema:
+
+1. **Extrai landmarks faciais** (468 pontos) usando MediaPipe
+2. **Compara expressões** entre uma imagem neutra (referência) e imagens com expressões alvo (sad/happy)
+3. **Gera vetores binários** representando mudanças significativas nos landmarks
+4. **Constrói automaticamente** um Autômato Finito com transições baseadas nas análises reais
+5. **Gera uma Máquina de Turing** que valida se as expressões correspondem ao esperado
+6. **Valida e classifica** as expressões, retornando 0 (sad válido), 1 (happy válido) ou ✗ (inválido)
+
+**Funcionalidades principais:**
+- ✅ Detecção automática de mudanças nas imagens
+- ✅ Teste automático de thresholds (sensibilidade de detecção)
+- ✅ Validação em tempo real das expressões
+- ✅ Visualizações gráficas (Graphviz) do Autômato e Máquina de Turing
+- ✅ Interface web interativa (Streamlit)
+
+**Funcionalidades principais:**
+- ✅ Detecção automática de mudanças nas imagens
+- ✅ Teste automático de thresholds (sensibilidade de detecção)
+- ✅ Validação em tempo real das expressões
+- ✅ Visualizações gráficas (Graphviz) do Autômato e Máquina de Turing
+- ✅ Interface web interativa (Streamlit)
+
+## Como funciona
+
+### 1. Análise de Landmarks
+O sistema extrai 468 pontos faciais (landmarks) de cada imagem usando MediaPipe e calcula as diferenças entre:
+- **neutral.jpg** (referência) → **sad.jpg** 
+- **neutral.jpg** (referência) → **happy.jpg**
+
+### 2. Geração do Vetor Binário
+Para cada landmark, o sistema verifica se houve mudança significativa:
+- `1` = mudança significativa detectada
+- `0` = sem mudança significativa
+
+### 3. Decisão Automática
+Baseado na maioria de 1s vs 0s no vetor:
+- **Maioria de 1s** → classificado como `happy`
+- **Maioria de 0s** → classificado como `sad`
+- **Empate** → classificado como `neutral`
+
+### 4. Validação
+O sistema valida se a classificação corresponde ao esperado:
+- `sad.jpg` classificado como `sad` → ✅ **retorna 0**
+- `happy.jpg` classificado como `happy` → ✅ **retorna 1**
+- Classificação incorreta → ❌ **retorna ✗** (com detalhes)
+
+### 5. Geração do Autômato e Máquina de Turing
+- **Autômato:** Criado automaticamente com transições `neutral→sad` e `neutral→happy` baseadas nas decisões reais
+- **Máquina de Turing:** Valida as expressões testando se correspondem aos rótulos esperados
+
+## Principais capacidades
 - Extração de landmarks (MediaPipe)
 - Construção de grafos de face (cada landmark é um nó)
 - Cálculo de grafos de diferença e vetores binários normalizados por escala da face
@@ -20,6 +76,7 @@ Resumo rápido dos módulos em `src/` e o que cada um faz (útil para leitura do
 
 - `src/landmark_extractor.py`
 	- Extrai landmarks faciais. Prefere MediaPipe (recomendado) e tem um parser para CSVs do OpenFace.
+	Obs: (O repositório contém suporte para consumir saídas do OpenFace, mas não inclui o OpenFace (nem binários))
 - `src/digraph.py`
 	- Funções para construir o digrafo da face (`build_face_digraph`) e gerar o digrafo de diferença entre duas sets de landmarks (`digraph_from_difference`). Também produz o vetor binário de mudança por landmark.
 - `src/generate_digraphs.py`

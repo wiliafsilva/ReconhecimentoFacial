@@ -12,5 +12,6 @@
     "diff_neutral_sad_meta.json",
     "diff_neutral_happy_meta.json"
   ],
-  "automaton": "automaton.json"
+  "automaton": "automaton.json",
+  "turing_machine": "turing_machine.json"
 }
