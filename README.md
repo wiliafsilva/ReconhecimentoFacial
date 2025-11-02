@@ -100,6 +100,17 @@ Resumo rápido dos módulos em `src/` e o que cada um faz (útil para leitura do
 - `src/app.py`
 	- UI Streamlit que orquestra geração/inspeção dos digraphs, renderiza grafos/JSONs e contém a navegação para a página de comparação TM vs Autômato (se presente).
 
+## Referências
+
+1. G. Bradski and A. Kaehler, "Learning OpenCV: Computer Vision with the OpenCV Library", O'Reilly Media, 2008. (OpenCV — utilizado no projeto via `opencv-python`).
+2. NumPy developers, "NumPy: array programming with Python". Disponível em: https://numpy.org/ (utilizado no projeto como `numpy`).
+3. C. Lugaresi et al., "MediaPipe: A Framework for Building Perception Pipelines", arXiv:1906.08172 (2019). Documentação e guias: https://developers.google.com/mediapipe (MediaPipe — usado pelo `landmark_extractor`).
+4. A. A. Hagberg, D. A. Schult, P. J. Swart, "Exploring network structure, dynamics, and function using NetworkX", Proceedings of the 7th Python in Science Conference (SciPy 2008). (NetworkX — usado para manipular digrafos no projeto).
+5. F. Pedregosa et al., "Scikit-learn: Machine Learning in Python", Journal of Machine Learning Research, 12, pp. 2825–2830, 2011. (scikit-learn — usado, por exemplo, `NearestNeighbors`).
+6. W. McKinney, "Data Structures for Statistical Computing in Python", Proceedings of the 9th Python in Science Conference, 2010. (pandas — usado para leitura/serialização de CSVs/extras).
+7. J. D. Hunter, "Matplotlib: A 2D graphics environment", Computing in Science & Engineering, 9(3), pp. 90–95, 2007. (matplotlib — usado para visualizações no projeto).
+8. Streamlit developers, "Streamlit — The fastest way to build data apps in Python". Disponível em: https://streamlit.io/ (Streamlit — usado pela interface em `app.py`).
+
 Dependências
 -------------
 As dependências estão em `requirements.txt`. Principais pacotes:
